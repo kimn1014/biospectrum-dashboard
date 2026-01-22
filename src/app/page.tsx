@@ -47,7 +47,7 @@ export default function Home() {
     <AuthWrapper>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="pt-32 pb-20 px-6">
+        <section className="pt-20 pb-20 px-6">
           <div className="max-w-6xl mx-auto">
             <p className="text-sm text-zinc-400 mb-4 animate-fadeInUp">
               Shopify Renewal Project
