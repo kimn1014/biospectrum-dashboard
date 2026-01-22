@@ -67,7 +67,7 @@ export default function ResourcesPage() {
     <AuthWrapper>
       <div className="min-h-screen">
         {/* Header */}
-        <section className="pt-32 pb-12 px-6 border-b border-zinc-200">
+        <section className="pt-12 pb-12 px-6 border-b border-zinc-200">
           <div className="max-w-4xl mx-auto">
             <Link
               href="/"

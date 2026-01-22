@@ -17,7 +17,7 @@ export default function GuideDetailPage() {
   if (!guide) {
     return (
       <AuthWrapper>
-        <div className="min-h-screen pt-28 px-6">
+        <div className="min-h-screen pt-12 px-6">
           <div className="max-w-4xl mx-auto text-center py-20">
             <p className="text-zinc-400 mb-4">
               {t('가이드를 찾을 수 없습니다', 'Guide not found')}
@@ -35,7 +35,7 @@ export default function GuideDetailPage() {
     <AuthWrapper>
       <div className="min-h-screen">
         {/* Header */}
-        <section className="pt-28 pb-12 px-6 border-b border-zinc-200">
+        <section className="pt-12 pb-12 px-6 border-b border-zinc-200">
           <div className="max-w-4xl mx-auto">
             <Link
               href="/guide"

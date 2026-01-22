@@ -11,7 +11,7 @@ export default function TasksPage() {
     <AuthWrapper>
       <div className="min-h-screen">
         {/* Header */}
-        <section className="pt-28 pb-12 px-6 border-b border-zinc-200">
+        <section className="pt-12 pb-12 px-6 border-b border-zinc-200">
           <div className="max-w-4xl mx-auto">
             <p className="text-xs text-zinc-400 uppercase tracking-wider mb-3 animate-fadeInUp">
               Action Items
