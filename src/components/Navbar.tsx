@@ -11,6 +11,7 @@ const navItems = [
   { href: '/backend', labelKo: '백엔드', labelEn: 'Backend' },
   { href: '/tasks', labelKo: '작업', labelEn: 'Tasks' },
   { href: '/guide', labelKo: '가이드', labelEn: 'Guide' },
+  { href: '/resources', labelKo: '자료실', labelEn: 'Resources' },
 ];
 
 export default function Navbar() {
