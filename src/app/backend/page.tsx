@@ -31,8 +31,6 @@ export default function BackendPage() {
     completed: backendTasks.filter(t => t.status === 'completed').length,
   };
 
-  const progress = Math.round((counts.completed / counts.all) * 100);
-
   return (
     <AuthWrapper>
       <div className="min-h-screen">
@@ -54,26 +52,20 @@ export default function BackendPage() {
         {/* Stats */}
         <section className="py-12 px-6 border-b border-zinc-200 bg-white">
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
               <div className="animate-fadeInUp stagger-2">
-                <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">
-                  {t('진행률', 'Progress')}
-                </p>
-                <p className="text-3xl font-light text-zinc-900">{progress}%</p>
-              </div>
-              <div className="animate-fadeInUp stagger-3">
                 <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">
                   {t('전체', 'Total')}
                 </p>
                 <p className="text-3xl font-light text-zinc-900">{counts.all}</p>
               </div>
-              <div className="animate-fadeInUp stagger-4">
+              <div className="animate-fadeInUp stagger-3">
                 <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">
                   {t('진행중', 'Active')}
                 </p>
                 <p className="text-3xl font-light text-zinc-900">{counts['in-progress']}</p>
               </div>
-              <div className="animate-fadeInUp stagger-5">
+              <div className="animate-fadeInUp stagger-4">
                 <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">
                   {t('완료', 'Done')}
                 </p>
