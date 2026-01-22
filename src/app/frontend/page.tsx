@@ -1,16 +1,66 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AuthWrapper from '@/components/AuthWrapper';
 import { useLanguage } from '@/context/LanguageContext';
-import TaskCard from '@/components/TaskCard';
+import TaskCardEditable from '@/components/TaskCardEditable';
+import TaskModal from '@/components/TaskModal';
 import StatusFilter from '@/components/StatusFilter';
-import { frontendTasks } from '@/data/frontendTasks';
 import { Status } from '@/components/StatusBadge';
+import { Task, TaskInsert, getTasks, createTask, updateTask, deleteTask } from '@/lib/supabase';
 
 export default function FrontendPage() {
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<Status | 'all'>('all');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  const loadTasks = async () => {
+    setIsLoading(true);
+    const data = await getTasks('frontend');
+    setTasks(data);
+    setIsLoading(false);
+  };
+
+  const handleSave = async (taskData: TaskInsert) => {
+    if (editingTask) {
+      const updated = await updateTask(editingTask.id, taskData);
+      if (updated) {
+        setTasks(tasks.map(t => t.id === updated.id ? updated : t));
+      }
+    } else {
+      const maxOrder = tasks.length > 0 ? Math.max(...tasks.map(t => t.sort_order)) : 0;
+      const created = await createTask({ ...taskData, sort_order: maxOrder + 1 });
+      if (created) {
+        setTasks([...tasks, created]);
+      }
+    }
+    setIsModalOpen(false);
+    setEditingTask(null);
+  };
+
+  const handleEdit = (task: Task) => {
+    setEditingTask(task);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    const success = await deleteTask(id);
+    if (success) {
+      setTasks(tasks.filter(t => t.id !== id));
+    }
+  };
+
+  const handleAddNew = () => {
+    setEditingTask(null);
+    setIsModalOpen(true);
+  };
 
   const statusOrder: Record<string, number> = {
     'pending': 0,
@@ -18,17 +68,17 @@ export default function FrontendPage() {
     'in-progress': 2,
   };
 
-  const sortedTasks = [...frontendTasks].sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
+  const sortedTasks = [...tasks].sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
 
   const filteredTasks = activeFilter === 'all'
     ? sortedTasks
     : sortedTasks.filter(task => task.status === activeFilter);
 
   const counts = {
-    all: frontendTasks.length,
-    pending: frontendTasks.filter(t => t.status === 'pending').length,
-    'in-progress': frontendTasks.filter(t => t.status === 'in-progress').length,
-    completed: frontendTasks.filter(t => t.status === 'completed').length,
+    all: tasks.length,
+    pending: tasks.filter(t => t.status === 'pending').length,
+    'in-progress': tasks.filter(t => t.status === 'in-progress').length,
+    completed: tasks.filter(t => t.status === 'completed').length,
   };
 
   return (
@@ -78,27 +128,46 @@ export default function FrontendPage() {
         {/* Filter & List */}
         <section className="py-8 px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-8 animate-fadeInUp stagger-3">
+            <div className="flex items-center justify-between mb-8 animate-fadeInUp stagger-3">
               <StatusFilter
                 activeFilter={activeFilter}
                 onFilterChange={setActiveFilter}
                 counts={counts}
               />
+              <button
+                onClick={handleAddNew}
+                className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                {t('작업 추가', 'Add Task')}
+              </button>
             </div>
 
-            <div className="space-y-px bg-zinc-200">
-              {filteredTasks.map((task, index) => (
-                <div
-                  key={task.id}
-                  className="animate-fadeInUp"
-                  style={{ animationDelay: `${0.1 + index * 0.05}s` }}
-                >
-                  <TaskCard task={task} />
-                </div>
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="text-center py-20 animate-fadeIn">
+                <p className="text-zinc-400">{t('로딩 중...', 'Loading...')}</p>
+              </div>
+            ) : (
+              <div className="space-y-px bg-zinc-200">
+                {filteredTasks.map((task, index) => (
+                  <div
+                    key={task.id}
+                    className="animate-fadeInUp"
+                    style={{ animationDelay: `${0.1 + index * 0.05}s` }}
+                  >
+                    <TaskCardEditable
+                      task={task}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
-            {filteredTasks.length === 0 && (
+            {!isLoading && filteredTasks.length === 0 && (
               <div className="text-center py-20 animate-fadeIn">
                 <p className="text-zinc-400">
                   {t('해당 상태의 작업이 없습니다', 'No tasks with this status')}
@@ -108,6 +177,17 @@ export default function FrontendPage() {
           </div>
         </section>
       </div>
+
+      <TaskModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingTask(null);
+        }}
+        onSave={handleSave}
+        task={editingTask}
+        category="frontend"
+      />
     </AuthWrapper>
   );
 }
