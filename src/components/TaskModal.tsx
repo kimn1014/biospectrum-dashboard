@@ -12,6 +12,23 @@ interface TaskModalProps {
   category: 'frontend' | 'backend';
 }
 
+// Translation helper function
+async function translateText(text: string | string[]): Promise<string | string[]> {
+  try {
+    const response = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, targetLang: 'en' }),
+    });
+    if (!response.ok) throw new Error('Translation failed');
+    const data = await response.json();
+    return data.translated;
+  } catch (error) {
+    console.error('Translation error:', error);
+    return Array.isArray(text) ? text : text;
+  }
+}
+
 export default function TaskModal({ isOpen, onClose, onSave, task, category }: TaskModalProps) {
   const { t } = useLanguage();
   const [formData, setFormData] = useState<TaskInsert>({
@@ -33,6 +50,7 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
   const [contentEnText, setContentEnText] = useState('');
   const [requiredInfoKoText, setRequiredInfoKoText] = useState('');
   const [requiredInfoEnText, setRequiredInfoEnText] = useState('');
+  const [isTranslating, setIsTranslating] = useState(false);
 
   useEffect(() => {
     if (task) {
@@ -78,18 +96,57 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
     }
   }, [task, category]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsTranslating(true);
 
-    const taskData: TaskInsert = {
-      ...formData,
-      content_ko: contentKoText ? contentKoText.split('\n').filter(s => s.trim()) : [],
-      content_en: contentEnText ? contentEnText.split('\n').filter(s => s.trim()) : [],
-      required_info_ko: requiredInfoKoText ? requiredInfoKoText.split('\n').filter(s => s.trim()) : [],
-      required_info_en: requiredInfoEnText ? requiredInfoEnText.split('\n').filter(s => s.trim()) : [],
-    };
+    try {
+      // Prepare Korean content
+      const contentKoArray = contentKoText ? contentKoText.split('\n').filter(s => s.trim()) : [];
+      const requiredInfoKoArray = requiredInfoKoText ? requiredInfoKoText.split('\n').filter(s => s.trim()) : [];
 
-    onSave(taskData);
+      // Auto-translate if English fields are empty but Korean fields have content
+      let titleEn = formData.title_en;
+      let contentEnArray = contentEnText ? contentEnText.split('\n').filter(s => s.trim()) : [];
+      let memoEn = formData.memo_en;
+      let requiredInfoEnArray = requiredInfoEnText ? requiredInfoEnText.split('\n').filter(s => s.trim()) : [];
+
+      // Translate title if needed
+      if (formData.title_ko && !formData.title_en.trim()) {
+        titleEn = await translateText(formData.title_ko) as string;
+      }
+
+      // Translate content if needed
+      if (contentKoArray.length > 0 && contentEnArray.length === 0) {
+        contentEnArray = await translateText(contentKoArray) as string[];
+      }
+
+      // Translate memo if needed
+      if (formData.memo_ko && !formData.memo_en?.trim()) {
+        memoEn = await translateText(formData.memo_ko) as string;
+      }
+
+      // Translate required info if needed
+      if (requiredInfoKoArray.length > 0 && requiredInfoEnArray.length === 0) {
+        requiredInfoEnArray = await translateText(requiredInfoKoArray) as string[];
+      }
+
+      const taskData: TaskInsert = {
+        ...formData,
+        title_en: titleEn,
+        content_ko: contentKoArray,
+        content_en: contentEnArray,
+        memo_en: memoEn,
+        required_info_ko: requiredInfoKoArray,
+        required_info_en: requiredInfoEnArray,
+      };
+
+      onSave(taskData);
+    } catch (error) {
+      console.error('Error during save:', error);
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -126,14 +183,15 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
             </div>
             <div>
               <label className="block text-xs text-zinc-400 uppercase tracking-wider mb-2">
-                {t('제목 (영어)', 'Title (English)')} *
+                {t('제목 (영어)', 'Title (English)')}
+                <span className="text-zinc-300 normal-case ml-1">{t('비우면 자동번역', 'Auto-translate if empty')}</span>
               </label>
               <input
                 type="text"
                 value={formData.title_en}
                 onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
+                placeholder={t('비워두면 자동 번역됩니다', 'Leave empty for auto-translation')}
                 className="w-full px-4 py-3 border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 transition-colors"
-                required
               />
             </div>
           </div>
@@ -196,11 +254,13 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
             <div>
               <label className="block text-xs text-zinc-400 uppercase tracking-wider mb-2">
                 {t('작업 내용 (영어)', 'Content (English)')}
+                <span className="text-zinc-300 normal-case ml-1">{t('비우면 자동번역', 'Auto-translate if empty')}</span>
               </label>
               <textarea
                 value={contentEnText}
                 onChange={(e) => setContentEnText(e.target.value)}
                 rows={4}
+                placeholder={t('비워두면 자동 번역됩니다', 'Leave empty for auto-translation')}
                 className="w-full px-4 py-3 border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 transition-colors resize-none"
               />
             </div>
@@ -222,11 +282,13 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
             <div>
               <label className="block text-xs text-zinc-400 uppercase tracking-wider mb-2">
                 {t('필요 정보 (영어)', 'Required Info (English)')}
+                <span className="text-zinc-300 normal-case ml-1">{t('비우면 자동번역', 'Auto-translate if empty')}</span>
               </label>
               <textarea
                 value={requiredInfoEnText}
                 onChange={(e) => setRequiredInfoEnText(e.target.value)}
                 rows={2}
+                placeholder={t('비워두면 자동 번역됩니다', 'Leave empty for auto-translation')}
                 className="w-full px-4 py-3 border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 transition-colors resize-none"
               />
             </div>
@@ -248,11 +310,13 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
             <div>
               <label className="block text-xs text-zinc-400 uppercase tracking-wider mb-2">
                 {t('메모 (영어)', 'Memo (English)')}
+                <span className="text-zinc-300 normal-case ml-1">{t('비우면 자동번역', 'Auto-translate if empty')}</span>
               </label>
               <textarea
                 value={formData.memo_en}
                 onChange={(e) => setFormData({ ...formData, memo_en: e.target.value })}
                 rows={3}
+                placeholder={t('비워두면 자동 번역됩니다', 'Leave empty for auto-translation')}
                 className="w-full px-4 py-3 border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 transition-colors resize-none"
               />
             </div>
@@ -263,15 +327,17 @@ export default function TaskModal({ isOpen, onClose, onSave, task, category }: T
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+              disabled={isTranslating}
+              className="px-6 py-3 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors disabled:opacity-50"
             >
               {t('취소', 'Cancel')}
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors"
+              disabled={isTranslating}
+              className="px-6 py-3 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 disabled:cursor-wait"
             >
-              {task ? t('수정', 'Update') : t('추가', 'Add')}
+              {isTranslating ? t('번역 중...', 'Translating...') : (task ? t('수정', 'Update') : t('추가', 'Add'))}
             </button>
           </div>
         </form>
