@@ -1,14 +1,29 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import AuthWrapper from '@/components/AuthWrapper';
 import { useLanguage } from '@/context/LanguageContext';
 import Link from 'next/link';
-import { frontendTasks } from '@/data/frontendTasks';
-import { backendTasks } from '@/data/backendTasks';
-import { pendingTasks } from '@/data/pendingTasks';
+import { getTasks, Task } from '@/lib/supabase';
 
 export default function Home() {
   const { t } = useLanguage();
+  const [frontendTasks, setFrontendTasks] = useState<Task[]>([]);
+  const [backendTasks, setBackendTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const [frontend, backend] = await Promise.all([
+        getTasks('frontend'),
+        getTasks('backend'),
+      ]);
+      setFrontendTasks(frontend);
+      setBackendTasks(backend);
+      setIsLoading(false);
+    };
+    loadData();
+  }, []);
 
   const frontendStats = {
     total: frontendTasks.length,
@@ -21,6 +36,9 @@ export default function Home() {
     completed: backendTasks.filter(t => t.status === 'completed').length,
     inProgress: backendTasks.filter(t => t.status === 'in-progress').length,
   };
+
+  const pendingCount = frontendTasks.filter(t => t.status === 'pending').length +
+    backendTasks.filter(t => t.status === 'pending').length;
 
   return (
     <AuthWrapper>
@@ -66,11 +84,15 @@ export default function Home() {
                 </div>
                 <div className="flex items-end gap-8">
                   <div>
-                    <p className="text-4xl font-light text-zinc-900">{frontendStats.completed}</p>
+                    <p className="text-4xl font-light text-zinc-900">
+                      {isLoading ? '-' : frontendStats.completed}
+                    </p>
                     <p className="text-sm text-zinc-400">{t('완료', 'done')}</p>
                   </div>
                   <div>
-                    <p className="text-4xl font-light text-zinc-400">{frontendStats.inProgress}</p>
+                    <p className="text-4xl font-light text-zinc-400">
+                      {isLoading ? '-' : frontendStats.inProgress}
+                    </p>
                     <p className="text-sm text-zinc-400">{t('진행중', 'active')}</p>
                   </div>
                 </div>
@@ -94,11 +116,15 @@ export default function Home() {
                 </div>
                 <div className="flex items-end gap-8">
                   <div>
-                    <p className="text-4xl font-light text-zinc-900">{backendStats.completed}</p>
+                    <p className="text-4xl font-light text-zinc-900">
+                      {isLoading ? '-' : backendStats.completed}
+                    </p>
                     <p className="text-sm text-zinc-400">{t('완료', 'done')}</p>
                   </div>
                   <div>
-                    <p className="text-4xl font-light text-zinc-400">{backendStats.inProgress}</p>
+                    <p className="text-4xl font-light text-zinc-400">
+                      {isLoading ? '-' : backendStats.inProgress}
+                    </p>
                     <p className="text-sm text-zinc-400">{t('진행중', 'active')}</p>
                   </div>
                 </div>
@@ -121,7 +147,9 @@ export default function Home() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-4xl font-light text-zinc-900">{pendingTasks.length}</p>
+                  <p className="text-4xl font-light text-zinc-900">
+                    {isLoading ? '-' : pendingCount}
+                  </p>
                   <p className="text-sm text-zinc-400">{t('작업 대기중', 'tasks pending')}</p>
                 </div>
               </Link>
