@@ -4,22 +4,25 @@ import { useState, useEffect } from 'react';
 import AuthWrapper from '@/components/AuthWrapper';
 import { useLanguage } from '@/context/LanguageContext';
 import Link from 'next/link';
-import { getTasks, Task } from '@/lib/supabase';
+import { getTasks, Task, getResources, Resource } from '@/lib/supabase';
 
 export default function Home() {
   const { t } = useLanguage();
   const [frontendTasks, setFrontendTasks] = useState<Task[]>([]);
   const [backendTasks, setBackendTasks] = useState<Task[]>([]);
+  const [resources, setResources] = useState<Resource[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
-      const [frontend, backend] = await Promise.all([
+      const [frontend, backend, resourceList] = await Promise.all([
         getTasks('frontend'),
         getTasks('backend'),
+        getResources(),
       ]);
       setFrontendTasks(frontend);
       setBackendTasks(backend);
+      setResources(resourceList);
       setIsLoading(false);
     };
     loadData();
@@ -173,6 +176,30 @@ export default function Home() {
                 <div>
                   <p className="text-4xl font-light text-zinc-900">3</p>
                   <p className="text-sm text-zinc-400">{t('가이드 문서', 'guide documents')}</p>
+                </div>
+              </Link>
+
+              {/* Resources */}
+              <Link
+                href="/resources"
+                className="group bg-white p-8 md:p-12 hover:bg-zinc-50 transition-colors duration-300 animate-fadeInUp stagger-6"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <div>
+                    <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">05</p>
+                    <h3 className="text-2xl font-medium text-zinc-900">
+                      {t('자료실', 'Resources')}
+                    </h3>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-4xl font-light text-zinc-900">
+                    {isLoading ? '-' : resources.length}
+                  </p>
+                  <p className="text-sm text-zinc-400">{t('등록된 자료', 'resources')}</p>
                 </div>
               </Link>
             </div>

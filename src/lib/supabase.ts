@@ -90,3 +90,79 @@ export async function deleteTask(id: string): Promise<boolean> {
 
   return true;
 }
+
+// Resource types and functions
+export interface Resource {
+  id: string;
+  title: string;
+  url: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ResourceInsert = Omit<Resource, 'id' | 'created_at' | 'updated_at'>;
+export type ResourceUpdate = Partial<ResourceInsert>;
+
+// Fetch all resources
+export async function getResources(): Promise<Resource[]> {
+  const { data, error } = await supabase
+    .from('resources')
+    .select('*')
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching resources:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+// Create a new resource
+export async function createResource(resource: ResourceInsert): Promise<Resource | null> {
+  const { data, error } = await supabase
+    .from('resources')
+    .insert([resource])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error creating resource:', error);
+    return null;
+  }
+
+  return data;
+}
+
+// Update a resource
+export async function updateResource(id: string, updates: ResourceUpdate): Promise<Resource | null> {
+  const { data, error } = await supabase
+    .from('resources')
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating resource:', error);
+    return null;
+  }
+
+  return data;
+}
+
+// Delete a resource
+export async function deleteResource(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('resources')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting resource:', error);
+    return false;
+  }
+
+  return true;
+}
