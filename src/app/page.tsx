@@ -5,6 +5,7 @@ import AuthWrapper from '@/components/AuthWrapper';
 import { useLanguage } from '@/context/LanguageContext';
 import Link from 'next/link';
 import { getTasks, Task, getResources, Resource } from '@/lib/supabase';
+import { pendingTasks } from '@/data/pendingTasks';
 
 export default function Home() {
   const { t } = useLanguage();
@@ -40,8 +41,7 @@ export default function Home() {
     inProgress: backendTasks.filter(t => t.status === 'in-progress').length,
   };
 
-  const pendingCount = frontendTasks.filter(t => t.status === 'pending').length +
-    backendTasks.filter(t => t.status === 'pending').length;
+  const pendingCount = pendingTasks.length;
 
   return (
     <AuthWrapper>
@@ -151,7 +151,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-4xl font-light text-zinc-900">
-                    {isLoading ? '-' : pendingCount}
+                    {pendingCount}
                   </p>
                   <p className="text-sm text-zinc-400">{t('작업 대기중', 'tasks pending')}</p>
                 </div>
