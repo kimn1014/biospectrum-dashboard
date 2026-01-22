@@ -1,65 +1,164 @@
-import Image from "next/image";
+'use client';
+
+import AuthWrapper from '@/components/AuthWrapper';
+import { useLanguage } from '@/context/LanguageContext';
+import Link from 'next/link';
+import { frontendTasks } from '@/data/frontendTasks';
+import { backendTasks } from '@/data/backendTasks';
+import { pendingTasks } from '@/data/pendingTasks';
 
 export default function Home() {
+  const { t } = useLanguage();
+
+  const frontendStats = {
+    total: frontendTasks.length,
+    completed: frontendTasks.filter(t => t.status === 'completed').length,
+    inProgress: frontendTasks.filter(t => t.status === 'in-progress').length,
+  };
+
+  const backendStats = {
+    total: backendTasks.length,
+    completed: backendTasks.filter(t => t.status === 'completed').length,
+    inProgress: backendTasks.filter(t => t.status === 'in-progress').length,
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <AuthWrapper>
+      <div className="min-h-screen">
+        {/* Hero Section */}
+        <section className="pt-32 pb-20 px-6">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-sm text-zinc-400 mb-4 animate-fadeInUp">
+              Shopify Renewal Project
+            </p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-900 tracking-tight leading-[1.1] mb-6 animate-fadeInUp stagger-1">
+              Biospectrum<br />
+              <span className="text-zinc-400">Dashboard</span>
+            </h1>
+            <p className="text-lg text-zinc-500 max-w-xl animate-fadeInUp stagger-2">
+              {t(
+                '프로젝트 진행 현황을 대시보드에서 확인하실 수 있습니다.',
+                'You can check the project progress on the dashboard.'
+              )}
+            </p>
+          </div>
+        </section>
+
+        {/* Navigation Cards */}
+        <section className="py-16 px-6 border-t border-zinc-200">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-200">
+              {/* Frontend */}
+              <Link
+                href="/frontend"
+                className="group bg-white p-8 md:p-12 hover:bg-zinc-50 transition-colors duration-300 animate-fadeInUp stagger-3"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <div>
+                    <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">01</p>
+                    <h3 className="text-2xl font-medium text-zinc-900">
+                      {t('프론트엔드', 'Frontend')}
+                    </h3>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
+                <div className="flex items-end gap-8">
+                  <div>
+                    <p className="text-4xl font-light text-zinc-900">{frontendStats.completed}</p>
+                    <p className="text-sm text-zinc-400">{t('완료', 'done')}</p>
+                  </div>
+                  <div>
+                    <p className="text-4xl font-light text-zinc-400">{frontendStats.inProgress}</p>
+                    <p className="text-sm text-zinc-400">{t('진행중', 'active')}</p>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Backend */}
+              <Link
+                href="/backend"
+                className="group bg-white p-8 md:p-12 hover:bg-zinc-50 transition-colors duration-300 animate-fadeInUp stagger-4"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <div>
+                    <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">02</p>
+                    <h3 className="text-2xl font-medium text-zinc-900">
+                      {t('백엔드', 'Backend')}
+                    </h3>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
+                <div className="flex items-end gap-8">
+                  <div>
+                    <p className="text-4xl font-light text-zinc-900">{backendStats.completed}</p>
+                    <p className="text-sm text-zinc-400">{t('완료', 'done')}</p>
+                  </div>
+                  <div>
+                    <p className="text-4xl font-light text-zinc-400">{backendStats.inProgress}</p>
+                    <p className="text-sm text-zinc-400">{t('진행중', 'active')}</p>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Tasks */}
+              <Link
+                href="/tasks"
+                className="group bg-white p-8 md:p-12 hover:bg-zinc-50 transition-colors duration-300 animate-fadeInUp stagger-5"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <div>
+                    <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">03</p>
+                    <h3 className="text-2xl font-medium text-zinc-900">
+                      {t('진행 필요 작업', 'Pending Tasks')}
+                    </h3>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-4xl font-light text-zinc-900">{pendingTasks.length}</p>
+                  <p className="text-sm text-zinc-400">{t('작업 대기중', 'tasks pending')}</p>
+                </div>
+              </Link>
+
+              {/* Guide */}
+              <Link
+                href="/guide"
+                className="group bg-white p-8 md:p-12 hover:bg-zinc-50 transition-colors duration-300 animate-fadeInUp stagger-6"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <div>
+                    <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">04</p>
+                    <h3 className="text-2xl font-medium text-zinc-900">
+                      {t('어드민 가이드', 'Admin Guide')}
+                    </h3>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-4xl font-light text-zinc-900">3</p>
+                  <p className="text-sm text-zinc-400">{t('가이드 문서', 'guide documents')}</p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-8 px-6 border-t border-zinc-200">
+          <div className="max-w-6xl mx-auto flex items-center justify-between text-sm text-zinc-400">
+            <span>Biospectrum Dashboard</span>
+            <span>2024</span>
+          </div>
+        </footer>
+      </div>
+    </AuthWrapper>
   );
 }
