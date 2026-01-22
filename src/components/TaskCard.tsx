@@ -32,7 +32,7 @@ export default function TaskCard({ task }: TaskCardProps) {
   const memo = language === 'ko' ? task.memoKo : task.memoEn;
   const requiredInfo = language === 'ko' ? task.requiredInfoKo : task.requiredInfoEn;
 
-  const hasDetails = content?.length || memo || requiredInfo?.length || task.dueDate;
+  const hasDetails = content?.length || (memo && memo.trim()) || requiredInfo?.length || task.dueDate;
 
   return (
     <div className="group bg-white border border-zinc-200 hover:border-zinc-300 transition-all duration-300">
@@ -100,7 +100,7 @@ export default function TaskCard({ task }: TaskCardProps) {
             </div>
           )}
 
-          {memo && (
+          {memo && memo.trim() && (
             <div className="p-4 bg-zinc-50 border-l-2 border-zinc-300">
               <h4 className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
                 {t('메모', 'Note')}

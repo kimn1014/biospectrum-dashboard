@@ -19,7 +19,7 @@ export default function TaskCardEditable({ task, onEdit, onDelete }: TaskCardEdi
   const memo = language === 'ko' ? task.memo_ko : task.memo_en;
   const requiredInfo = language === 'ko' ? task.required_info_ko : task.required_info_en;
 
-  const hasDetails = (content && content.length > 0) || memo || (requiredInfo && requiredInfo.length > 0) || task.due_date;
+  const hasDetails = (content && content.length > 0) || (memo && memo.trim()) || (requiredInfo && requiredInfo.length > 0) || task.due_date;
 
   const statusConfig = {
     'pending': { bg: 'bg-zinc-100', text: 'text-zinc-600', label: t('예정', 'Pending') },
@@ -119,7 +119,7 @@ export default function TaskCardEditable({ task, onEdit, onDelete }: TaskCardEdi
             </div>
           )}
 
-          {memo && (
+          {memo && memo.trim() && (
             <div className="p-4 bg-zinc-50 border-l-2 border-zinc-300">
               <h4 className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
                 {t('메모', 'Note')}
