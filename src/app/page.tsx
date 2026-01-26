@@ -6,6 +6,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import Link from 'next/link';
 import { getTasks, Task, getResources, Resource } from '@/lib/supabase';
 import { pendingTasks } from '@/data/pendingTasks';
+import { guides } from '@/data/guides';
 
 export default function Home() {
   const { t } = useLanguage();
@@ -174,7 +175,7 @@ export default function Home() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-4xl font-light text-zinc-900">3</p>
+                  <p className="text-4xl font-light text-zinc-900">{guides.length}</p>
                   <p className="text-sm text-zinc-400">{t('가이드 문서', 'guide documents')}</p>
                 </div>
               </Link>
