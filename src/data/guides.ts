@@ -96,6 +96,16 @@ export const guides: Guide[] = [
               'Customers registered in Shopify Company',
               'Customers authorized by Biospectrum'
             ]
+          },
+          {
+            titleKo: '고객 승인 처리',
+            titleEn: 'Customer Approval Processing',
+            bulletPointsKo: [
+              '고객 계정의 승인 및 승인 거절은 서드파티(외부) 앱에서 처리해야 합니다'
+            ],
+            bulletPointsEn: [
+              'Customer account approval and rejection must be processed through a third-party (external) app'
+            ]
           }
         ]
       },
