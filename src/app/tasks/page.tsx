@@ -31,9 +31,15 @@ export default function TasksPage() {
             <div className="flex items-center gap-12">
               <div className="animate-fadeInUp stagger-2">
                 <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">
-                  {t('대기중', 'Pending')}
+                  {t('전체', 'Total')}
                 </p>
                 <p className="text-3xl font-light text-zinc-900">{pendingTasks.length}</p>
+              </div>
+              <div className="animate-fadeInUp stagger-3">
+                <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">
+                  {t('진행중', 'In Progress')}
+                </p>
+                <p className="text-3xl font-light text-amber-600">{pendingTasks.filter(t => t.status === 'in-progress').length}</p>
               </div>
             </div>
           </div>
@@ -51,15 +57,26 @@ export default function TasksPage() {
                 >
                   <div className="flex items-start justify-between gap-6 mb-4">
                     <div className="flex-1">
-                      <span className={`inline-flex items-center px-2.5 py-1 text-xs font-medium tracking-wide mb-3 ${
-                        task.priority === 'high'
-                          ? 'bg-zinc-900 text-white'
-                          : task.priority === 'medium'
-                          ? 'bg-zinc-200 text-zinc-700'
-                          : 'bg-zinc-100 text-zinc-500'
-                      }`}>
-                        {task.priority === 'high' ? t('높음', 'High') : task.priority === 'medium' ? t('중간', 'Medium') : t('낮음', 'Low')}
-                      </span>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={`inline-flex items-center px-2.5 py-1 text-xs font-medium tracking-wide ${
+                          task.priority === 'high'
+                            ? 'bg-zinc-900 text-white'
+                            : task.priority === 'medium'
+                            ? 'bg-zinc-200 text-zinc-700'
+                            : 'bg-zinc-100 text-zinc-500'
+                        }`}>
+                          {task.priority === 'high' ? t('높음', 'High') : task.priority === 'medium' ? t('중간', 'Medium') : t('낮음', 'Low')}
+                        </span>
+                        <span className={`inline-flex items-center px-2.5 py-1 text-xs font-medium tracking-wide ${
+                          task.status === 'in-progress'
+                            ? 'bg-amber-100 text-amber-700'
+                            : task.status === 'done'
+                            ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-zinc-100 text-zinc-500'
+                        }`}>
+                          {task.status === 'in-progress' ? t('진행중', 'In Progress') : task.status === 'done' ? t('완료', 'Done') : t('대기', 'Pending')}
+                        </span>
+                      </div>
                       <h3 className="text-base font-medium text-zinc-900 leading-snug">
                         {language === 'ko' ? task.titleKo : task.titleEn}
                       </h3>
