@@ -915,5 +915,248 @@ export const guides: Guide[] = [
         ]
       }
     ]
+  },
+  {
+    id: '3',
+    titleKo: 'AWS 사용 방법 가이드',
+    titleEn: 'AWS Usage Guide',
+    descriptionKo: 'AWS S3를 사용한 COA 파일 업로드 및 배송 요율 등록 방법 안내',
+    descriptionEn: 'Guide for COA file upload and shipping rate registration using AWS S3',
+    icon: 'cloud',
+    slug: 'aws-guide',
+    sections: [
+      {
+        id: 'coa-upload',
+        titleKo: 'COA 파일 업로드',
+        titleEn: 'COA File Upload',
+        descriptionKo: '구매 후 Lot 번호를 입력해서 확인 가능한 COA 파일의 경우 AWS에 일괄 등록해 주시면 됩니다. 아래 이미지를 참고하셔서 등록 부탁드립니다.',
+        descriptionEn: 'For COA files that can be verified by entering the Lot number after purchase, please register them in bulk on AWS. Please refer to the images below.',
+        contentBlocks: [
+          {
+            type: 'steps',
+            steps: [
+              { textKo: 'AWS Management Console 상단 검색창에 "S3"를 입력하고 S3 서비스를 선택합니다', textEn: 'Enter "S3" in the AWS Management Console search bar and select S3 service' },
+              { textKo: '범용 버킷 목록에서 "biospectrum" 버킷을 클릭합니다', textEn: 'Click the "biospectrum" bucket from the general-purpose bucket list' },
+              { textKo: '버킷 내 "doc/" 폴더를 선택하여 COA 파일을 업로드할 위치로 이동합니다', textEn: 'Select the "doc/" folder in the bucket to navigate to the COA file upload location' }
+            ]
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/3d9224c4-1d05-4c6f-9a69-d93ff16a6b31/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202026-01-23%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.27.45.png',
+              captionKo: 'AWS 콘솔에서 S3 검색 후 서비스 선택',
+              captionEn: 'Search S3 in AWS Console and select the service'
+            }
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/ee6b1400-e016-4ac5-b160-3ae3debd1741/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202026-01-23%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.27.59.png',
+              captionKo: 'biospectrum 버킷 선택 (아시아 태평양 서울 ap-northeast-2)',
+              captionEn: 'Select biospectrum bucket (Asia Pacific Seoul ap-northeast-2)'
+            }
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/f172e48d-ef08-4d77-8d06-586d5e353dcc/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202026-01-23%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.28.26.png',
+              captionKo: 'doc/ 폴더 내 업로드 화면 - "파일 추가" 버튼 클릭',
+              captionEn: 'Upload screen in doc/ folder - Click "Add files" button'
+            }
+          }
+        ]
+      },
+      {
+        id: 'coa-upload-methods',
+        titleKo: 'COA 파일 업로드 방법',
+        titleEn: 'COA File Upload Methods',
+        descriptionKo: '두 가지 방법으로 파일을 업로드할 수 있습니다.',
+        descriptionEn: 'Files can be uploaded in two ways.',
+        contentBlocks: [
+          {
+            type: 'text',
+            textKo: '방법 1: S3 콘솔의 doc/ 폴더에서 좌측 파일 탐색기에서 파일을 드래그하여 업로드합니다.',
+            textEn: 'Method 1: Drag and drop files from the file explorer to the S3 console doc/ folder.'
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/ae11bfc8-83a8-4215-b184-4e00c4f30e1d/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202026-01-23%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.28.36.png',
+              captionKo: '방법 1: 파일 탐색기에서 S3 콘솔로 드래그 앤 드롭',
+              captionEn: 'Method 1: Drag and drop from file explorer to S3 console'
+            }
+          },
+          {
+            type: 'text',
+            textKo: '방법 2: "업로드" 버튼을 클릭한 후, 파일을 선택하여 업로드합니다.',
+            textEn: 'Method 2: Click the "Upload" button, then select files to upload.'
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/f63125fb-34ae-42ff-a18f-3a556577d88e/SCR-20260123-ondw.png',
+              captionKo: '방법 2: doc/ 폴더에서 "업로드" 버튼 클릭',
+              captionEn: 'Method 2: Click "Upload" button in doc/ folder'
+            }
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/2ee3847c-93c2-4790-9068-9d84826819b0/SCR-20260123-onnm.png',
+              captionKo: '업로드할 파일 선택 후 "업로드" 버튼 클릭하여 완료',
+              captionEn: 'Select files to upload then click "Upload" to complete'
+            }
+          }
+        ]
+      },
+      {
+        id: 'shipping-rate',
+        titleKo: '배송 요율 등록 방법',
+        titleEn: 'Shipping Rate Registration',
+        descriptionKo: '배송 요율 등록도 AWS에서 등록해 주시면 됩니다. 파일 등록 과정은 COA와 동일하나 shipping 폴더로 접속합니다.',
+        descriptionEn: 'Shipping rates can also be registered on AWS. The file registration process is the same as COA, but access the shipping folder instead.',
+        contentBlocks: [
+          {
+            type: 'callout',
+            calloutType: 'info',
+            textKo: '현재 매일 정오 12:00 (정오)에 자동 sync를 진행합니다.',
+            textEn: 'Currently, automatic sync runs daily at 12:00 PM (noon).'
+          },
+          {
+            type: 'text',
+            textKo: 'biospectrum 버킷에서 doc/ 대신 shipping/ 폴더로 접속합니다.',
+            textEn: 'Navigate to the shipping/ folder instead of doc/ in the biospectrum bucket.'
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/2818141f-5125-4f68-af67-bf7517ec21a9/SCR-20260128-nkwz.png',
+              captionKo: 'biospectrum 버킷 내 shipping/ 폴더로 접속',
+              captionEn: 'Navigate to shipping/ folder in biospectrum bucket'
+            }
+          }
+        ]
+      },
+      {
+        id: 'shipping-naming',
+        titleKo: '배송 요율 파일명 규칙',
+        titleEn: 'Shipping Rate File Naming Rules',
+        contentBlocks: [
+          {
+            type: 'callout',
+            calloutType: 'warning',
+            textKo: '파일명은 shipping_rate_YYYYMMDD 날짜 형식을 반드시 준수하여 업로드해야 합니다. 예: shipping_rate_20260122.xlsx',
+            textEn: 'File names must strictly follow the shipping_rate_YYYYMMDD date format. Example: shipping_rate_20260122.xlsx'
+          },
+          {
+            type: 'text',
+            textKo: '시스템은 가장 최신 날짜의 파일을 파싱하여 sync를 맞추는 구조입니다.',
+            textEn: 'The system parses the file with the most recent date to synchronize data.'
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/829c6996-5ad1-4e01-beb2-0aeb7b93310f/SCR-20260128-nlbv.png',
+              captionKo: 'shipping/ 폴더에 shipping_rate_YYYYMMDD.xlsx 형식으로 업로드',
+              captionEn: 'Upload to shipping/ folder with shipping_rate_YYYYMMDD.xlsx format'
+            }
+          }
+        ]
+      },
+      {
+        id: 'manual-sync',
+        titleKo: '수동 싱크 변경 방법',
+        titleEn: 'Manual Sync Method',
+        descriptionKo: '윈도우 cmd 또는 Mac 터미널을 켠 후 아래 명령어를 입력하시면 됩니다.',
+        descriptionEn: 'Open Windows cmd or Mac terminal and enter the following command.',
+        contentBlocks: [
+          {
+            type: 'code',
+            codeBlock: {
+              label: '수동 싱크 명령어',
+              code: 'curl -X POST "https://biospectrum-shipping.lukuku.co/api/v1/rates/sync?format=text"'
+            }
+          }
+        ]
+      },
+      {
+        id: 'rate-query',
+        titleKo: '각 요율 조회 (반영 확인 API)',
+        titleEn: 'Rate Query (Verification API)',
+        descriptionKo: '아래 명령어로 현재 등록된 요율 데이터를 조회할 수 있습니다.',
+        descriptionEn: 'You can query the currently registered rate data with the following commands.',
+        contentBlocks: [
+          {
+            type: 'code',
+            codeBlock: {
+              label: '현재 운송비 조회',
+              code: 'curl "https://biospectrum-shipping.lukuku.co/api/v1/rates/shipping-rates?format=text"'
+            }
+          },
+          {
+            type: 'code',
+            codeBlock: {
+              label: '박스 규격 조회',
+              code: 'curl "https://biospectrum-shipping.lukuku.co/api/v1/rates/box-specs?format=text"'
+            }
+          },
+          {
+            type: 'code',
+            codeBlock: {
+              label: '패킹 규칙 조회',
+              code: 'curl "https://biospectrum-shipping.lukuku.co/api/v1/rates/packing-rules?format=text"'
+            }
+          }
+        ]
+      },
+      {
+        id: 'excel-template',
+        titleKo: '엑셀 파일 형식',
+        titleEn: 'Excel File Format',
+        descriptionKo: '엑셀 파일 형식은 아래 첨부파일 아래에 추가하는 형식으로 파일명 수정 후 등록 진행해 주세요.',
+        descriptionEn: 'Please modify the file name and register using the format of the attached file below.',
+        contentBlocks: [
+          {
+            type: 'callout',
+            calloutType: 'info',
+            textKo: '템플릿 파일: shipping_rate_20260122.xlsx — 해당 파일을 다운로드 후, 데이터를 추가/수정하여 파일명을 새 날짜로 변경한 뒤 shipping/ 폴더에 업로드하세요.',
+            textEn: 'Template file: shipping_rate_20260122.xlsx — Download this file, add/edit data, change the file name to a new date, then upload to the shipping/ folder.'
+          }
+        ]
+      },
+      {
+        id: 'sample-product',
+        titleKo: '샘플 제품 등록시 유의 사항',
+        titleEn: 'Sample Product Registration Notes',
+        descriptionKo: '바이오스펙트럼측 sample 제품 등록시 넣어야 할 metafield 입니다.',
+        descriptionEn: 'These are the metafields required when registering Biospectrum sample products.',
+        contentBlocks: [
+          {
+            type: 'table',
+            table: {
+              headers: ['Metafield', '값', '설명'],
+              rows: [
+                ['Is Sample', 'True', '샘플 제품 여부를 True로 설정'],
+                ['packing case', '기입 (예: pa001)', '패킹 케이스 코드 입력']
+              ]
+            }
+          },
+          {
+            type: 'callout',
+            calloutType: 'warning',
+            textKo: '샘플 제품의 경우 반드시 Is Sample: True로 설정하고, packing case 값을 기입해 주셔야 합니다.',
+            textEn: 'For sample products, you must set Is Sample: True and fill in the packing case value.'
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/05450888-ad2f-49c2-824f-ae68cd08c736/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202026-01-28%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%203.17.17.png',
+              captionKo: 'Shopify Admin > 제품 > Metafields에서 Is Sample: True, packing case 값 기입',
+              captionEn: 'Set Is Sample: True and packing case value in Shopify Admin > Products > Metafields'
+            }
+          }
+        ]
+      }
+    ]
   }
 ];
