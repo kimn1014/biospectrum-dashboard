@@ -1144,8 +1144,8 @@ export const guides: Guide[] = [
           {
             type: 'callout',
             calloutType: 'warning',
-            textKo: '샘플 제품의 경우 반드시 Is Sample: True로 설정하고, packing case 값을 기입해 주셔야 합니다.',
-            textEn: 'For sample products, you must set Is Sample: True and fill in the packing case value.'
+            textKo: '샘플 제품의 경우 반드시 Is Sample:True로 설정 해주셔야 합니다. Packing case는 제품 Variant 등록시 꼭 입력해 주셔야 합니다.',
+            textEn: 'For sample products, you must set Is Sample: True. Packing case must be entered when registering product Variants.'
           },
           {
             type: 'image',
