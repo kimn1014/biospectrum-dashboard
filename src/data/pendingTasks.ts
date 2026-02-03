@@ -7,7 +7,7 @@ export interface PendingTask {
   memoKo?: string;
   memoEn?: string;
   priority: 'high' | 'medium' | 'low';
-  status: 'pending' | 'in-progress' | 'done';
+  status: 'pending' | 'in-progress' | 'done' | 'scheduled';
 }
 
 export const pendingTasks: PendingTask[] = [
@@ -30,5 +30,14 @@ export const pendingTasks: PendingTask[] = [
     memoEn: 'Please let us know if you need help from Lukuku during PG registration.',
     priority: 'high',
     status: 'in-progress',
+  },
+  {
+    id: 'pt-3',
+    titleKo: '스토어 전체 검수',
+    titleEn: 'Full Store Inspection',
+    descriptionKo: '스토어 전체 기능 및 콘텐츠 검수 예정',
+    descriptionEn: 'Full store functionality and content inspection scheduled',
+    priority: 'high',
+    status: 'scheduled',
   },
 ];
