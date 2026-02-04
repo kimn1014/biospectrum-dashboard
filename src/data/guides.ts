@@ -1158,5 +1158,195 @@ export const guides: Guide[] = [
         ]
       }
     ]
+  },
+  {
+    id: '4',
+    titleKo: '업체별 차등 가격 적용 방법',
+    titleEn: 'Company-specific Differential Pricing Guide',
+    descriptionKo: 'Company(거래처 관리)와 Catalog(카탈로그) 기능을 활용한 업체별 맞춤 가격 설정 방법 안내',
+    descriptionEn: 'Guide for setting up custom pricing per company using Company and Catalog features',
+    icon: 'dollar-sign',
+    slug: 'pricing',
+    sections: [
+      {
+        id: 'overview',
+        titleKo: '개요',
+        titleEn: 'Overview',
+        descriptionKo: '업체별 차등 가격을 적용하기 위해서는 Company(거래처 관리) 기능과 Catalog(카탈로그) 기능을 함께 이해하고 활용해야 합니다.',
+        descriptionEn: 'To apply differential pricing per company, you need to understand and use both the Company (client management) and Catalog features together.',
+        contentBlocks: [
+          {
+            type: 'flow',
+            flowItems: ['Company 등록', 'Catalog 생성', '가격 규칙 설정', 'Company에 할당']
+          },
+          {
+            type: 'callout',
+            calloutType: 'info',
+            textKo: 'Company는 거래처(법인)를 관리하는 기능이고, Catalog는 해당 거래처에 적용할 가격 정책을 설정하는 기능입니다. 두 기능을 조합하여 업체별 맞춤 단가를 제공할 수 있습니다.',
+            textEn: 'Company manages business clients, and Catalog sets pricing policies for those clients. By combining both features, you can provide custom pricing per company.'
+          }
+        ]
+      },
+      {
+        id: 'company-feature',
+        titleKo: 'Company 기능 (B2B 거래처 관리)',
+        titleEn: 'Company Feature (B2B Client Management)',
+        descriptionKo: 'Shopify B2B 기능에서 고객을 회사(Company) 단위로 등록하여 관리할 수 있습니다.',
+        descriptionEn: 'In Shopify B2B, you can register and manage customers at the Company level.',
+        contentBlocks: [
+          {
+            type: 'table',
+            table: {
+              headers: ['구분', '기존 Shopify', 'B2B Company 기능'],
+              rows: [
+                ['고객 관리 단위', '개인(Customer) 단위', '회사(Company) 단위'],
+                ['담당자 관리', '개별 고객만 관리', '여러 담당자 등록 가능 (구매, 회계 등)'],
+                ['가격 정책', '모든 고객 동일 가격', '회사별 차등 가격 적용 가능']
+              ]
+            }
+          },
+          {
+            type: 'callout',
+            calloutType: 'success',
+            textKo: '예시: "ABC Trading"이라는 회사를 Company로 등록하고, 그 안에 구매 담당자, 회계 담당자 등 여러 명의 담당자를 계정으로 연결할 수 있습니다.',
+            textEn: 'Example: Register "ABC Trading" as a Company, then link multiple contacts such as purchase managers and accountants to that company.'
+          }
+        ]
+      },
+      {
+        id: 'catalog-feature',
+        titleKo: 'Catalog 기능 (차등 가격 관리)',
+        titleEn: 'Catalog Feature (Differential Pricing)',
+        descriptionKo: 'Catalog는 회사별로 다른 가격 정책을 적용할 수 있도록 돕는 핵심 기능입니다.',
+        descriptionEn: 'Catalog is the key feature that enables applying different pricing policies per company.',
+        contentBlocks: [
+          {
+            type: 'text',
+            textKo: '카탈로그를 통해 세 가지 방식의 가격 조정이 가능합니다:',
+            textEn: 'Three types of price adjustments are available through catalogs:'
+          },
+          {
+            type: 'table',
+            table: {
+              headers: ['가격 조정 방식', '설명', '활용 예시'],
+              rows: [
+                ['전체 가격 조정', '모든 제품 가격에 일괄 할인/인상 적용', '전 제품 10% 할인 적용'],
+                ['특정 제품 개별 가격', '특정 제품에만 별도의 단가 설정', 'A 제품만 $50으로 고정'],
+                ['구간별(볼륨) 가격', '수량별 차등 가격 적용', '수량이 많을수록 단가 할인']
+              ]
+            }
+          }
+        ]
+      },
+      {
+        id: 'volume-pricing',
+        titleKo: '구간별(볼륨) 가격 설정',
+        titleEn: 'Volume-based Pricing Setup',
+        descriptionKo: '수량 구간에 따라 단가를 차등 적용할 수 있습니다. 대량 구매 고객에게 더 낮은 단가를 제공하는 데 활용됩니다.',
+        descriptionEn: 'You can apply different unit prices based on quantity tiers. This is used to offer lower prices to bulk purchasers.',
+        contentBlocks: [
+          {
+            type: 'table',
+            table: {
+              headers: ['수량 구간', '단가', '비고'],
+              rows: [
+                ['1 ~ 99개', '$10', '기본 가격'],
+                ['100개 이상', '$9', '10% 할인'],
+                ['500개 이상', '$7', '30% 할인']
+              ]
+            }
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/bce7ad17-ec99-4dc0-9384-2cd85149dded/image.png',
+              captionKo: '구간별 전체 가격 조정 화면 - 수량 규칙 및 수량별 가격 설정',
+              captionEn: 'Volume-based pricing screen - quantity rules and tier pricing setup'
+            }
+          }
+        ]
+      },
+      {
+        id: 'catalog-csv',
+        titleKo: '카탈로그 대량 관리 (CSV 활용)',
+        titleEn: 'Bulk Catalog Management (CSV)',
+        descriptionKo: 'CSV 파일을 활용하여 가격/수량 규칙을 대량으로 관리할 수 있습니다.',
+        descriptionEn: 'You can manage pricing and quantity rules in bulk using CSV files.',
+        contentBlocks: [
+          {
+            type: 'steps',
+            steps: [
+              { textKo: '카탈로그 생성 후 가격/수량 규칙 데이터를 CSV 파일로 내보내기(Export)', textEn: 'Export pricing/quantity rule data to CSV file after creating a catalog' },
+              { textKo: 'CSV 파일에서 가격 및 수량 규칙을 일괄 수정', textEn: 'Bulk edit pricing and quantity rules in the CSV file' },
+              { textKo: '수정된 CSV 파일을 다시 가져오기(Import)하여 대량 업데이트 완료', textEn: 'Import the modified CSV file to complete bulk update' }
+            ]
+          },
+          {
+            type: 'image',
+            image: {
+              src: 'https://t9018523380.p.clickup-attachments.com/t9018523380/f82186fa-0c48-4aa2-a161-38de45a93a7c/image.png',
+              captionKo: 'CSV 파일을 활용한 구간별 개별 제품 가격 조정 화면',
+              captionEn: 'Volume-based individual product pricing adjustment using CSV file'
+            }
+          },
+          {
+            type: 'callout',
+            calloutType: 'info',
+            textKo: 'CSV 파일을 활용하면 수백 개의 제품 가격을 한번에 수정할 수 있어, 대량의 제품을 관리할 때 매우 효율적입니다.',
+            textEn: 'Using CSV files allows you to modify hundreds of product prices at once, making it very efficient for managing large product catalogs.'
+          }
+        ]
+      },
+      {
+        id: 'catalog-assignment',
+        titleKo: '카탈로그 할당 시 주의사항',
+        titleEn: 'Catalog Assignment Notes',
+        contentBlocks: [
+          {
+            type: 'table',
+            table: {
+              headers: ['항목', '제한 사항'],
+              rows: [
+                ['Company Location당 카탈로그', '최대 25개 할당 가능'],
+                ['스토어 전체 카탈로그', '최대 10,000개 생성 가능']
+              ]
+            }
+          },
+          {
+            type: 'callout',
+            calloutType: 'warning',
+            textKo: '동일 제품이 여러 카탈로그에 다른 가격으로 포함된 경우, 가장 낮은 가격이 고객에게 표시됩니다. 동일한 최저가일 경우, 먼저 생성된 카탈로그의 규칙이 적용됩니다.',
+            textEn: 'If the same product is included in multiple catalogs at different prices, the lowest price is displayed to the customer. If prices are equal, the rule from the earlier-created catalog applies.'
+          },
+          {
+            type: 'text',
+            textKo: '예시: A 카탈로그에서 양초가 $9이고, B 카탈로그에서 양초가 $7인 경우 → 고객에게는 $7로 표시됩니다.',
+            textEn: 'Example: If a candle is $9 in Catalog A and $7 in Catalog B → the customer sees $7.'
+          }
+        ]
+      },
+      {
+        id: 'summary',
+        titleKo: '핵심 정리',
+        titleEn: 'Summary',
+        contentBlocks: [
+          {
+            type: 'table',
+            table: {
+              headers: ['기능', '역할', '핵심 포인트'],
+              rows: [
+                ['Company', '거래처(법인 고객) 관리', '담당자 여러 명 등록 가능'],
+                ['Catalog', '차등 가격 정책 적용', '회사별, 제품별, 수량별 가격 설정'],
+                ['활용 방법', '카탈로그 → 회사 할당', '업체별 맞춤 단가 제공']
+              ]
+            }
+          },
+          {
+            type: 'flow',
+            flowItems: ['Company 등록', 'Catalog 생성 & 가격 설정', 'Company에 Catalog 할당', '업체별 맞춤 단가 적용 완료']
+          }
+        ]
+      }
+    ]
   }
 ];
